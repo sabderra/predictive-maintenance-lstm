@@ -1,4 +1,5 @@
 import numpy as np
+from random import shuffle
 import sys
 
 
@@ -31,14 +32,14 @@ class TSeries(object):
 
 class TSDataGenerator(object):
 
-    def __init__(self, data_df, x_cols, y_cols, batch_size, num_steps=50, stride=1, random=False, loop=False):
+    def __init__(self, data_df, x_cols, y_cols, batch_size, num_steps=50, stride=1, randomize=False, loop=False):
         self.data_df = data_df
         self.x_cols = x_cols
         self.y_cols = y_cols
         self.num_steps = num_steps
         self.batch_size = batch_size
         self.stride = stride
-        self.random = random
+        self.randomize = randomize
         self.loop = loop
 
         self.data = {}
@@ -94,7 +95,13 @@ class TSDataGenerator(object):
         while True:
             self.num_iterations += 1
 
-            for k_id, data in self.data.items():
+            sample_keys = list(self.data.keys())
+
+            if self.randomize:
+                shuffle(sample_keys)
+
+            for k_id in sample_keys:
+                data = self.data[k_id]
 
                 if data.num_items < self.batch_size:
                     continue
