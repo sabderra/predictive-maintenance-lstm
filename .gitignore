@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Working directories
+model/*
+!model/engine_model.h5
+!model/engine_pipline.h5
+data/*
+!data/README.md
