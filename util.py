@@ -1,12 +1,15 @@
 import os
+import sys
 import datetime
 import errno
 import numpy as np
+import glob
+
 
 from keras import backend as K
 
 
-def set_log_dir( model_dir, name, per_epoch=False, create_dir=True):
+def set_log_dir( model_dir, name, per_epoch=False, val_loss=False, create_dir=True):
     # Directory for training logs
     now = datetime.datetime.now()
 
@@ -21,7 +24,13 @@ def set_log_dir( model_dir, name, per_epoch=False, create_dir=True):
             raise FileNotFoundError( errno.ENOENT, os.strerror(errno.ENOENT), log_dir)
 
     # Path to save after each epoch. Include placeholders that get filled by Keras.
-    checkpoint_path = os.path.join(log_dir, "{}_*epoch*.h5".format(name.lower()))
+    checkpoint_path = os.path.join(log_dir, "{}_*epoch*_*val_loss*.h5".format(name.lower()))
+
+    if val_loss:
+        checkpoint_path = checkpoint_path.replace("*val_loss*", "{val_loss:.2f}")
+        per_epoch = True
+    else:
+        checkpoint_path = checkpoint_path.replace("_*val_loss*", "")
 
     if per_epoch:
         checkpoint_path = checkpoint_path.replace("*epoch*", "{epoch:04d}")
@@ -29,6 +38,31 @@ def set_log_dir( model_dir, name, per_epoch=False, create_dir=True):
         checkpoint_path = checkpoint_path.replace("*epoch*", now_str)
 
     return log_dir, checkpoint_path
+
+
+def find_model_file(model_dir, by_val_loss=True):
+    # file names are expected in format: <name>_<timestamp>_<epoch>_<val_loss>.h5
+    # _<epoch> and _<val_loss> are optional
+    
+    path = os.path.join(model_dir, "*.h5")
+    all_model_paths = sorted(glob.glob(path))
+
+    if by_val_loss:
+        model_path = all_model_paths[0]
+        val_loss = float(sys.maxsize)
+        for path in all_model_paths:
+            filename = os.path.basename(path)
+            file = os.path.splitext(filename)[0]
+            file_val_loss = file.split('_')[-1]
+            if val_loss > float(file_val_loss):
+                val_loss = float(file_val_loss)
+                model_path = path
+
+    else:
+        model_path = all_model_paths[-1]
+
+    return model_path
+
 
 # Root Mean Squared Loss Function
 def rmse(y_true, y_pred):
