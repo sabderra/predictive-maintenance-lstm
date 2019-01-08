@@ -1,6 +1,10 @@
 import os
 import pandas as pd
 
+def path_to_id_base(path):
+    fn = os.path.splitext(os.path.basename(path))[0]
+    return fn_id_map[fn]
+
 # Filename is mapped to a separate range to ensure unique engine ids
 fn_id_map = {
     "train_FD001": 1000,
