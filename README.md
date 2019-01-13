@@ -8,11 +8,11 @@ unexpected equipment failure.
 
 This project is a continuation of the work began as my project
 [Spark ML](https://github.com/sabderra/predictive-maintenance-spark) for CSCI-E63 where
-Spark, Spark ML, Sparked Structured Streaming, and Kafka were used to build an end-to-end workflow 
+Spark (DataFrames, ML, Structured Streaming, etc) and Kafka were used to build an end-to-end workflow 
 for predicting the Remaining Useful Life (RUL) of simulated turbofan engine data. A description of the data
 can be found [here](https://github.com/sabderra/predictive-maintenance-spark/blob/master/README.md)
 
-In this project we focus on using Keras and a Long Short-Term Memory (LSTM) based architecture create an improved
+In this project we focus on using Keras and a Long Short-Term Memory (LSTM) based architecture to create an improved
  prediction model.
  
 This repository includes a collection of notebooks and utility files.
@@ -32,11 +32,12 @@ conda install -c conda-forge ipywidgets
 ```
 If you don't want to bother with that replace tqdm_notebook with tqdm.
 
+## Data
+
+## Model
+
 ## Results
 
 <p align="center">
 <img src ="doc/images/test_predictions.png" />
 </p>
-
-
-
