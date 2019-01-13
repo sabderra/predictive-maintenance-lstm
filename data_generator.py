@@ -105,8 +105,11 @@ class TSeries(object):
             gap = data_df.shape[0] % seq_length
             if gap > 0:
                 num_pad_rows = seq_length - gap
-                pad_df = pd.DataFrame(np.zeros((num_pad_rows, data_df.shape[1])))
+                pad_df = pd.DataFrame(np.zeros((num_pad_rows, data_df.shape[1])),
+                                      columns=data_df.columns)
+                pad_df['id'] = pad_df['id'].astype(int)
                 self.data_df = pd.concat([pad_df, data_df])
+                self.data_df.reset_index()
 
                 assert (self.data_df.shape[0] % seq_length) == 0
 
