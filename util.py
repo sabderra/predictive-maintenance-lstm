@@ -2,29 +2,28 @@ import os
 import sys
 import datetime
 import errno
-import numpy as np
 import glob
-
-
+import numpy as np
 from keras import backend as K
 
 
-def set_log_dir( model_dir, name, per_epoch=False, val_loss=False, create_dir=True):
+def set_log_dir(model_dir, name, per_epoch=False, val_loss=False, create_dir=True):
     # Directory for training logs
     now = datetime.datetime.now()
 
     now_str = "{:%Y%m%dT%H%M}".format(now)
-    log_dir = os.path.join(model_dir, "{}{}".format( name.lower(), now_str))
+    log_dir = os.path.join(model_dir, "{}{}".format(name.lower(), now_str))
 
     # Create log_dir if not exists
     if not os.path.exists(log_dir):
         if create_dir:
             os.makedirs(log_dir)
         else:
-            raise FileNotFoundError( errno.ENOENT, os.strerror(errno.ENOENT), log_dir)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), log_dir)
 
-    # Path to save after each epoch. Include placeholders that get filled by Keras.
-    checkpoint_path = os.path.join(log_dir, "{}_*epoch*_*val_loss*.h5".format(name.lower()))
+    # Path to save after each epoch. Include epoch and val loss
+    # placeholders that gets filled by Keras.
+    checkpoint_path = os.path.join(log_dir, "{}_model_*epoch*_*val_loss*.h5".format(name.lower()))
 
     if val_loss:
         checkpoint_path = checkpoint_path.replace("*val_loss*", "{val_loss:.2f}")
@@ -35,13 +34,13 @@ def set_log_dir( model_dir, name, per_epoch=False, val_loss=False, create_dir=Tr
     if per_epoch:
         checkpoint_path = checkpoint_path.replace("*epoch*", "{epoch:04d}")
     else:
-        checkpoint_path = checkpoint_path.replace("*epoch*", now_str)
+        checkpoint_path = checkpoint_path.replace("_*epoch*", "")
 
     return log_dir, checkpoint_path
 
 
 def find_model_file(model_dir, by_val_loss=True):
-    # file names are expected in format: <name>_<timestamp>_<epoch>_<val_loss>.h5
+    # file names are expected in format: <name>_model_<timestamp>_<epoch>_<val_loss>.h5
     # _<epoch> and _<val_loss> are optional
     
     path = os.path.join(model_dir, "*.h5")
@@ -66,9 +65,10 @@ def find_model_file(model_dir, by_val_loss=True):
 
 # Root Mean Squared Loss Function
 def rmse(y_true, y_pred):
-        return K.sqrt(K.mean(K.square(y_pred - y_true)))
+    return K.sqrt(K.mean(K.square(y_pred - y_true)))
 
-class LRDecay():
+
+class LRDecay:
 
     def __init__(self, initial_lrate=1e-3, decay_multiple=0.5, epochs_step=25, patience_multiple=3):
         self.initial_lrate = initial_lrate
@@ -95,11 +95,11 @@ class LRDecay():
         elif (1+self.r_epoch) % self.epochs_step == 0:
             lrate = current_lr * self.linear_decay(self.r_epoch)
     
-        lrate = np.around(lrate,8)
+        lrate = np.around(lrate, 8)
 
         # Use the actual epoch to track history rather then
         # this runs epoch
-        self.history_lr.append( (epoch, current_lr, lrate))
+        self.history_lr.append((epoch, current_lr, lrate))
 
         self.r_epoch += 1
     
