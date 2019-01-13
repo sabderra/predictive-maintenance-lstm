@@ -15,10 +15,15 @@ can be found [here](https://github.com/sabderra/predictive-maintenance-spark/blo
 In this project we focus on using Keras and a Long Short-Term Memory (LSTM) based architecture to create an improved
  prediction model.
  
-This repository includes a collection of notebooks and utility files.
+This repository includes a collection of notebooks:
 * [data_analysis.ipynb](data_analysis.ipynb) - Loads and analyzes a sample of the data set.
 * [train.ipynb](train.ipynb) - Prepares, transforms the data as well as building the model and training it.
 * [model_prediction.ipynb](model_prediction.ipynb) - Runs preditions on the test data.
+
+and utility scripts:
+* [data_generator.py](data_generator.py) - Generator that will return time series data for use by an RNN such as LSTM or GRU.
+* [data_util.py](data_util.py) - Helper function for preprocessing and transforming the data.
+* [util.py](util.py) - Miscellaneous function for training.
 
 ## Installing Dependencies
 To install the packages: 
