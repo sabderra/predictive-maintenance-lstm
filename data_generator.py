@@ -35,7 +35,7 @@ def split_data(df, randomize=True, train_pct=0.8):
 
 
 def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128, sequence_length=25, stride=1,
-                      randomize=False, loop=False):
+                      randomize=False, loop=False, pad=False):
     """
     Given training and validation DataFrames, create Generators for each. The columns that will be used for the features
     and labels is specified by the x_cols and y_cols. Only these columns will be returned by the generators.
@@ -50,7 +50,8 @@ def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128
         stride (int): Steps between time series events (default 1)
         randomize (bool): If true the engines are shuffled (default False)
         loop (bool): If true, continuously loop when the end of the data is reached (default False)
-
+        pad (bool): If True, will add zero value rows to ensure all data can be returned,
+                    i.e. rows % seq_length == 0.
     Returns:
         TSDataGenerator: Training generator
         TSDataGenerator: Validation generator
@@ -63,7 +64,8 @@ def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128
                                            seq_length=sequence_length,
                                            stride=stride,
                                            randomize=randomize,
-                                           loop=loop)
+                                           loop=loop,
+                                           pad=pad)
 
     val_data_generator = TSDataGenerator(val_data_df,
                                          x_cols,
@@ -72,7 +74,8 @@ def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128
                                          seq_length=sequence_length,
                                          stride=stride,
                                          randomize=randomize,
-                                         loop=loop)
+                                         loop=loop,
+                                         pad=pad)
 
     return train_data_generator, val_data_generator
 
