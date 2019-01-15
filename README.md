@@ -74,8 +74,7 @@ The data is further divided into a training and test set each that requires some
 * An engine’s status is terminated prior to actual engine failure. If the time series for an engine in the test data ends at 41, the model’s goal is to identify the RUL at that point.
 * Using the provided RUL, a label column (rul) is added to hold the RUL at each time series.  This is generated in the following way: if the RUL is 112 at time series 41, then time series 1 will have an RUL of 153. The RUL is decremented with each succeeding entry.
 
-
-The original CMAPSS data was in multiple txt files and were combined into dedicated train (train.csv), test (test_x.csv), test label (test_y.csv). In total the data is 20M compressed.
+In total the data is approx 20M compressed.
 
 **Summary**
 * NASA C-MAPSS Turbofan Engine Degradation Simulation Data Set https://ti.arc.nasa.gov/c/6/ 
