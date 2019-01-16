@@ -99,7 +99,7 @@ To feed the LSTM network and support some experimentation I created a python gen
 
 ## Model
 <p align="center">
-<img src ="doc/images/model.png" />
+<img src ="doc/images/model.png" width="200"/>
 </p>
 
 ## Results
