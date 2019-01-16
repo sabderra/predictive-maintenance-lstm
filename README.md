@@ -84,10 +84,10 @@ In total the data is approx 20M compressed.
 
 **Download**
 
-<pre>
-$ curl -L https://ti.arc.nasa.gov/c/6/ -o data/CMAPSSDATA.zip
-$ (cd data; unzip CMAPSSDATA.zip)
-</pre>
+```bash
+curl -L https://ti.arc.nasa.gov/c/6/ -o data/CMAPSSDATA.zip
+(cd data; unzip CMAPSSDATA.zip)
+```
 
 ### Generator
 To feed the LSTM network and support some experimentation I created a python generator and support functions that provide the following capabilities:
@@ -104,6 +104,19 @@ To feed the LSTM network and support some experimentation I created a python gen
 
 ## Results
 
+The RMSE scores on the various test data set.
+
+<center>
+ 
+| FD001  | FD002  | FD003  | FD004  |
+|:------:|:------:|:------:|:------:|
+| 19.80  | 31.55  | 81.33  | 94.19  |
+
+</center>
+
+The following plot shows how far off each prediction was. Zero represents the actual RUL. Y values that are positive express an over estimate of the RUL, while those that are negative reflect a under estimate.
+
 <p align="center">
 <img src ="doc/images/test_predictions.png" />
 </p>
+
