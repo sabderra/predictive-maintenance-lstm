@@ -98,6 +98,9 @@ To feed the LSTM network and support some experimentation I created a python gen
 * Loop indefinately as required by Keras
 
 ## Model
+<p align="center">
+<img src ="doc/images/model.png" />
+</p>
 
 ## Results
 
