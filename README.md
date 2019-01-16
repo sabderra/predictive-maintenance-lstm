@@ -21,8 +21,8 @@ This repository includes a collection of notebooks:
 
 and utility scripts:
 * [data_generator.py](data_generator.py) - Generator that will return time series data for use by an RNN such as LSTM or GRU.
-* [data_util.py](data_util.py) - Helper function for preprocessing and transforming the data.
-* [util.py](util.py) - Miscellaneous function for training.
+* [data_util.py](data_util.py) - Helper functions for preprocessing and transforming the data.
+* [util.py](util.py) - Miscellaneous functions for training.
 
 ## Installing Dependencies
 To install the packages: 
@@ -55,7 +55,7 @@ The data set is a multivariate time series. Each entry (row) in the data set ref
 26)     sensor measurement  21
 </pre>
 
-The CMAPSS data set is divided in 4 sets each for training, test, and RUL. Each subset represents a different operational condition and consists of a different number of engines.
+The CMAPSS data set is divided in 4 subsets each for training, test, and RUL (FD001, FD002, FD003, FD004). A subset can have a different operational condition and consists of a different number of engines.
 
 All engines are assumed to be of the same model type and operating normally at the start of each series.  During its series, it develops a fault.
 
