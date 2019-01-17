@@ -253,7 +253,7 @@ class TSDataGenerator(object):
                     x_seq = data_array[self.x_cols].values
                     x_data.append(x_seq)
 
-                    y_seq = data_array[self.y_cols].values[0]
+                    y_seq = data_array[self.y_cols].values[-1]
                     y_data.append(y_seq)
 
                     num_in_batch += 1

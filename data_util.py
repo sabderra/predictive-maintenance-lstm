@@ -1,9 +1,11 @@
 import os
 import pandas as pd
 
+
 def path_to_id_base(path):
     fn = os.path.splitext(os.path.basename(path))[0]
     return fn_id_map[fn]
+
 
 # Filename is mapped to a separate range to ensure unique engine ids
 fn_id_map = {
@@ -89,7 +91,6 @@ def calc_test_rul(feature_df, label_df):
     # If index is not reset there will be int/str type issues when attempting the merge.
     cycle_count_df = feature_df.groupby('id').count().reset_index()[['id', 'cycle']].rename(index=str, columns={
         "cycle": "cycles"}).reset_index(drop=True)
-    print(cycle_count_df.shape)
 
     # Join cycle and RUL dataframes
     assert cycle_count_df.shape[0] == label_df.shape[0]
