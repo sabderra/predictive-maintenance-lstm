@@ -104,7 +104,7 @@ To feed the LSTM network and support some experimentation I created a python gen
 
 ## Results
 
-The RMSE scores on the various test data set.
+The RMSE scores on the various test data files.
 
 <center>
  
@@ -120,7 +120,7 @@ The following plot shows how far off each prediction was. Zero represents the ac
 <img src ="doc/images/test_predictions.png" />
 </p>
 
-Below is a random set of engines taken from each of the test file. The blue line reflects the actual RUL while the yellow line is the predicted RUL. As mentioned earlier, the final actual is take from the ground truth RUL_F00*.txt files. All earlier values are monitonically increasing from this point.
+Below is a random set of engines taken from each of the test files. The blue line reflects the actual RUL while the yellow line is the predicted RUL. As mentioned earlier, the final actual is take from the ground truth RUL_F00*.txt files. All earlier values are monitonically increasing from this point.
 
 <p align="center">
 <img src ="doc/images/engine_predictions.png" />
