@@ -120,7 +120,7 @@ The following plot shows how far off each prediction <img src="https://latex.cod
 <img src ="doc/images/test_predictions.png" />
 </p>
 
-A histogram view shows the peak differences being in the +25 (overestiimate) region.
+A histogram view shows the peak differences being in the +25 (overestimate) region.
 
 <p align="center">
 <img src ="doc/images/test_predictions_hist.png" />
