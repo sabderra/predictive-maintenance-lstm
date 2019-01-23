@@ -109,3 +109,6 @@ model/*
 !model/engine_pipline.h5
 data/*
 !data/README.md
+
+# Intellij
+.idea/
