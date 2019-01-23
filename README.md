@@ -110,14 +110,20 @@ The RMSE scores on the various test data files.
  
 | FD001  | FD002  | FD003  | FD004  |
 |:------:|:------:|:------:|:------:|
-| 19.80  | 31.55  | 81.33  | 94.19  |
+| 40.03  | 41.83  | 60.55  | 65.00  |
 
 </center>
 
-The following plot shows how far off each prediction was. Zero represents the actual RUL. Y values that are positive express an over estimate of the RUL, while those that are negative reflect an under estimate.
+The following plot shows how far off each prediction <img src="https://latex.codecogs.com/gif.latex?\hat{y}^i-RUL^i" title="\hat{y}^i-RUL^i" /> was. Positive values reflect an over estimate of the RUL, while those that are negative reflect an under estimate.
 
 <p align="center">
 <img src ="doc/images/test_predictions.png" />
+</p>
+
+A histogram view shows the peak differences being in the +25 (overestimate) region.
+
+<p align="center">
+<img src ="doc/images/test_predictions_hist.png" />
 </p>
 
 Below is a random set of engines taken from each of the test files. The blue line reflects the actual RUL while the yellow line is the predicted RUL. As mentioned earlier, the final actual is take from the ground truth RUL_F00*.txt files. All earlier values are monitonically increasing from this point.

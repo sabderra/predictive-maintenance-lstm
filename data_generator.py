@@ -35,7 +35,7 @@ def split_data(df, randomize=True, train_pct=0.8):
 
 
 def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128, sequence_length=25, stride=1,
-                      randomize=False, loop=False, pad=False):
+                      randomize=False, loop=False, pad=False, verbose=False):
     """
     Given training and validation DataFrames, create Generators for each. The columns that will be used for the features
     and labels is specified by the x_cols and y_cols. Only these columns will be returned by the generators.
@@ -52,6 +52,7 @@ def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128
         loop (bool): If true, continuously loop when the end of the data is reached (default False)
         pad (bool): If True, will add zero value rows to ensure all data can be returned,
                     i.e. rows % seq_length == 0.
+        verbose (bool): If true, statistics on the generates is printed out.
     Returns:
         TSDataGenerator: Training generator
         TSDataGenerator: Validation generator
@@ -76,6 +77,23 @@ def create_generators(train_data_df, val_data_df, x_cols, y_cols, batch_size=128
                                          randomize=randomize,
                                          loop=loop,
                                          pad=pad)
+
+    if verbose:
+        num_t_engines = train_data_df['id'].unique().shape[0]
+        num_v_engines = val_data_df['id'].unique().shape[0]
+        num_t_cycles = train_data_df.shape[0]
+        num_v_cycles = val_data_df.shape[0]
+
+        print("Engine split: Training={:.2f}, Validation={:.2f}"
+              .format(num_t_engines / (num_t_engines + num_v_engines),
+                      num_v_engines / (num_t_engines + num_v_engines)))
+
+        print("Cycle split:  Training={:.2f}, Validation={:.2f}"
+              .format(num_t_cycles / (num_t_cycles + num_v_cycles),
+                      num_v_cycles / (num_t_cycles + num_v_cycles)))
+
+        train_data_generator.print_summary()
+        val_data_generator.print_summary()
 
     return train_data_generator, val_data_generator
 
@@ -201,7 +219,7 @@ class TSDataGenerator(object):
             num_total_steps += v.max_steps(self.seq_length)
 
             # Only count if the data can fit in a batch. Refer to padding.
-            if v.num_items >= self.batch_size:
+            if v.num_items >= self.seq_length:
                 num_items += 1
                 num_steps += v.max_steps(self.seq_length)
 
@@ -217,6 +235,11 @@ class TSDataGenerator(object):
     def print_summary(self, verbose=False):
         stats = self.summary()
         print("Number of items: ", stats['items'])
+
+        # The sequence length will be relevant to the cycle lengths. Engines will have to
+        # have minimum number of cycles no less then the sequence length else it would ignored or
+        # need to be padded. Those that will be dropped are counted as undersized.
+
         print("Undersized items: ", stats['total_items'] - stats['items'])
         print("Data shape: ", stats['shape'])
         print("Max steps: ", stats['max_steps'])
@@ -243,8 +266,8 @@ class TSDataGenerator(object):
             for k_id in sample_keys:
                 data = self.data[k_id]
 
-                # Only use this engine if it has enough data to fit in a batch.
-                if data.num_items < self.batch_size:
+                # Only use this engine if it has enough data to fit in a sequence. Refer to padding
+                if data.num_items < self.seq_length:
                     continue
 
                 data_array = data.get_sequence()
